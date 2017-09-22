@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+using tabuleiro;
+
 
 namespace XadrezConsole {
     class Program {
         static void Main(string[] args) {
+
+            
+
         }
     }
 }
