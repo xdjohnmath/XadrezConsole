@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-
-namespace tabuleiro {
+﻿namespace tabuleiro {
     class Peca {
 
         public Posicao posicao { get; set; }
