@@ -12,11 +12,11 @@
             pecas = new Peca[linhas, colunas];
         }
 
-        public Peca peca (int linha, int coluna) {
-            return pecas [linha, coluna];               //Retorna o objeto privado como público através do método criado.
+        public Peca peca(int linha, int coluna) {
+            return pecas[linha, coluna];               //Retorna o objeto privado como público através do método criado.
         }
 
-        public Peca peca (Posicao pos) {
+        public Peca peca(Posicao pos) {
             return pecas[pos.linha, pos.coluna];
         }
 
@@ -33,9 +33,21 @@
             p.posicao = pos;
         }
 
+        public Peca RetirarPeca(Posicao pos) {
+            if (peca(pos) == null) {
+                return null;
+            }
+            else {
+                Peca aux = peca(pos);
+                aux.posicao = null;
+                pecas[pos.linha, pos.coluna] = null;
+                return aux;
+            }
+        }
+
         public bool PosicaoValida(Posicao pos) {
             if (pos.linha < 0 || pos.linha >= linhas || pos.coluna < 0 || pos.coluna >= colunas) {
-                return false; 
+                return false;
             }
             return true;
         }
