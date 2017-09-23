@@ -12,7 +12,7 @@ namespace xadrex {
         }
 
         public Posicao toPosicao() {
-            return new Posicao(8 - linha, coluna - 'a')
+            return new Posicao(8 - linha, coluna - 'a');
         }
 
         public override string ToString() {
