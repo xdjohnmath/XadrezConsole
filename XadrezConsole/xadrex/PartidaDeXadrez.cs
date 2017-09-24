@@ -27,9 +27,9 @@ namespace xadrex{
 
         private void ColocarPecas() {
 
-            tab.ColocarPeca(new Torre(tab, Cor.Branca), new PosicaoXadrez('c',1).toPosicao());
+            tab.ColocarPeca(new Torre(tab, Cor.Branca), new PosicaoXadrez('C',1).toPosicao());
 
-            tab.ColocarPeca(new Torre(tab, Cor.Preta), new PosicaoXadrez('d', 1).toPosicao());
+            tab.ColocarPeca(new Rei(tab, Cor.Preta), new PosicaoXadrez('D', 1).toPosicao());
 
 
         }
