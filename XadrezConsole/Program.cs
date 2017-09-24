@@ -2,25 +2,27 @@
 using tabuleiro;
 using xadrex;
 
-namespace XadrezConsole
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
+namespace XadrezConsole {
+    class Program {
+        static void Main(string[] args) {
 
-            try
-            {
+            try {
                 PartidaDeXadrez partida = new PartidaDeXadrez();
 
-                while (!partida.terminada)
-                {
+                while (!partida.terminada) {
+
+                    try { 
+
                     Console.Clear();
                     Tela.ImprimirTabuleiro(partida.tab);
+                    Console.WriteLine();
+                    Console.WriteLine("Turno: " + partida.turno);
+                    Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
 
                     Console.WriteLine();
                     Console.Write("Origem: ");
                     Posicao origem = Tela.LerPosicaoXadrez().toPosicao();
+                    partida.validaPosicaoDeOrigem(origem);                 //Para verificar erros na digitação do comando
 
                     bool[,] posicoesPossiveis = partida.tab.peca(origem).MovimentosPossiveis();
 
@@ -30,13 +32,19 @@ namespace XadrezConsole
                     Console.WriteLine();
                     Console.Write("Destino: ");
                     Posicao destino = Tela.LerPosicaoXadrez().toPosicao();
+                    partida.ValidarPosicaoDeDestino(origem, destino);
 
-                    partida.ExecutarMovimento(origem, destino);
+                   
+                    partida.RealizaJogada(origem, destino);
+                    }
+                    catch (TabuleiroException e) {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
                 // Tela.ImprimirTabuleiro(tab);
             }
-            catch (TabuleiroException e)
-            {
+            catch (TabuleiroException e) {
                 Console.WriteLine(e.Message);
             }
 
