@@ -11,31 +11,28 @@ namespace XadrezConsole {
 
                 while (!partida.terminada) {
 
-                    try { 
+                    try {
 
-                    Console.Clear();
-                    Tela.ImprimirTabuleiro(partida.tab);
-                    Console.WriteLine();
-                    Console.WriteLine("Turno: " + partida.turno);
-                    Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
+                        Console.Clear();
+                        Tela.ImprimirPartida(partida);
 
-                    Console.WriteLine();
-                    Console.Write("Origem: ");
-                    Posicao origem = Tela.LerPosicaoXadrez().toPosicao();
-                    partida.validaPosicaoDeOrigem(origem);                 //Para verificar erros na digitação do comando
+                        Console.WriteLine();
+                        Console.Write("Origem: ");
+                        Posicao origem = Tela.LerPosicaoXadrez().toPosicao();
+                        partida.validaPosicaoDeOrigem(origem);                 //Para verificar erros na digitação do comando
 
-                    bool[,] posicoesPossiveis = partida.tab.peca(origem).MovimentosPossiveis();
+                        bool[,] posicoesPossiveis = partida.tab.peca(origem).MovimentosPossiveis();
 
-                    Console.Clear();
-                    Tela.ImprimirTabuleiro(partida.tab, posicoesPossiveis);
+                        Console.Clear();
+                        Tela.ImprimirTabuleiro(partida.tab, posicoesPossiveis);
 
-                    Console.WriteLine();
-                    Console.Write("Destino: ");
-                    Posicao destino = Tela.LerPosicaoXadrez().toPosicao();
-                    partida.ValidarPosicaoDeDestino(origem, destino);
+                        Console.WriteLine();
+                        Console.Write("Destino: ");
+                        Posicao destino = Tela.LerPosicaoXadrez().toPosicao();
+                        partida.ValidarPosicaoDeDestino(origem, destino);
 
-                   
-                    partida.RealizaJogada(origem, destino);
+
+                        partida.RealizaJogada(origem, destino);
                     }
                     catch (TabuleiroException e) {
                         Console.WriteLine(e.Message);
