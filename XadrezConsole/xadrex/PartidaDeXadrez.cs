@@ -12,6 +12,7 @@ namespace xadrex {
         private HashSet<Peca> pecas = new HashSet<Peca>();
         private HashSet<Peca> capturadas;
         public bool xeque { get; private set; }
+        public Peca vulneravelEnPassant { get; private set; }
 
 
         public PartidaDeXadrez() {
@@ -20,6 +21,7 @@ namespace xadrex {
             jogadorAtual = Cor.Branca;
             ColocarPecas();
             xeque = false;
+            vulneravelEnPassant = null;
             capturadas = new HashSet<Peca>();
 
         }
@@ -48,6 +50,20 @@ namespace xadrex {
                 Peca T = tab.RetirarPeca(origemT);
                 T.IncrementarQuantidadeDeMovimentos();
                 tab.ColocarPeca(T, destinoT);
+            }
+            // #jogadaespecial en passant
+            if(p is Peao) {
+                if(origem.coluna != destino.coluna && pecaCapturada == null) {
+                    Posicao posP;
+                    if (p.cor == Cor.Branca) {
+                        posP = new Posicao(destino.linha + 1, destino.coluna);
+                    }
+                    else {
+                        posP = new Posicao(destino.linha - 1, destino.coluna);
+                    }
+                    pecaCapturada = tab.RetirarPeca(posP);
+                    capturadas.Add(pecaCapturada);
+                }
             }
 
             return pecaCapturada;
@@ -79,6 +95,20 @@ namespace xadrex {
                 T.DecrementarQuantidadeDeMovimentos();
                 tab.ColocarPeca(T, origemT);
             }
+            // #jogadaespecial en passant
+            if(p is Peao) {
+                if (origem.coluna != destino.coluna && pecaCapturada == vulneravelEnPassant) {
+                    Peca peao = tab.RetirarPeca(destino);
+                    Posicao posP;
+                    if (p.cor == Cor.Branca) {
+                        posP = new Posicao(3, destino.coluna);
+                    }
+                    else {
+                        posP = new Posicao(4, destino.coluna);
+                    }
+                    tab.ColocarPeca(peao, posP);
+                }
+            }
         }
 
         public void RealizaJogada(Posicao origem, Posicao destino) {
@@ -102,6 +132,15 @@ namespace xadrex {
             else {
                 turno++;
                 MudaJogador();
+            }
+
+            Peca p = tab.peca(destino);
+            // #jogadaespecial en passant
+            if(p is Peao&& (destino.linha == origem.linha-2 || destino.linha == origem.linha + 2)) {
+                vulneravelEnPassant = p;
+            }
+            else {
+                vulneravelEnPassant = null;
             }
 
         }
@@ -206,13 +245,10 @@ namespace xadrex {
                             }
                         }
                     }
-
                 }
             }
             return true;
         }
-
-
 
         public void ColocarNovaPeca(char coluna, int linha, Peca peca) {
             tab.ColocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
@@ -229,14 +265,14 @@ namespace xadrex {
             ColocarNovaPeca('F', 1, new Bispo(tab, Cor.Branca));
             ColocarNovaPeca('G', 1, new Cavalo(tab, Cor.Branca));
             ColocarNovaPeca('H', 1, new Torre(tab, Cor.Branca));
-            ColocarNovaPeca('A', 2, new Peao(tab, Cor.Branca));
-            ColocarNovaPeca('B', 2, new Peao(tab, Cor.Branca));
-            ColocarNovaPeca('C', 2, new Peao(tab, Cor.Branca));
-            ColocarNovaPeca('D', 2, new Peao(tab, Cor.Branca));
-            ColocarNovaPeca('E', 2, new Peao(tab, Cor.Branca));
-            ColocarNovaPeca('F', 2, new Peao(tab, Cor.Branca));
-            ColocarNovaPeca('G', 2, new Peao(tab, Cor.Branca));
-            ColocarNovaPeca('H', 2, new Peao(tab, Cor.Branca));
+            ColocarNovaPeca('A', 2, new Peao(tab, Cor.Branca, this));
+            ColocarNovaPeca('B', 2, new Peao(tab, Cor.Branca, this));
+            ColocarNovaPeca('C', 2, new Peao(tab, Cor.Branca, this));
+            ColocarNovaPeca('D', 2, new Peao(tab, Cor.Branca, this));
+            ColocarNovaPeca('E', 2, new Peao(tab, Cor.Branca, this));
+            ColocarNovaPeca('F', 2, new Peao(tab, Cor.Branca, this));
+            ColocarNovaPeca('G', 2, new Peao(tab, Cor.Branca, this));
+            ColocarNovaPeca('H', 2, new Peao(tab, Cor.Branca, this));
 
             //PRETAS
 
@@ -248,14 +284,14 @@ namespace xadrex {
             ColocarNovaPeca('F', 8, new Bispo(tab, Cor.Preta));
             ColocarNovaPeca('G', 8, new Cavalo(tab, Cor.Preta));
             ColocarNovaPeca('H', 8, new Torre(tab, Cor.Preta));
-            ColocarNovaPeca('A', 7, new Peao(tab, Cor.Preta));
-            ColocarNovaPeca('B', 7, new Peao(tab, Cor.Preta));
-            ColocarNovaPeca('C', 7, new Peao(tab, Cor.Preta));
-            ColocarNovaPeca('D', 7, new Peao(tab, Cor.Preta));
-            ColocarNovaPeca('E', 7, new Peao(tab, Cor.Preta));
-            ColocarNovaPeca('F', 7, new Peao(tab, Cor.Preta));
-            ColocarNovaPeca('G', 7, new Peao(tab, Cor.Preta));
-            ColocarNovaPeca('H', 7, new Peao(tab, Cor.Preta));
+            ColocarNovaPeca('A', 7, new Peao(tab, Cor.Preta, this));
+            ColocarNovaPeca('B', 7, new Peao(tab, Cor.Preta, this));
+            ColocarNovaPeca('C', 7, new Peao(tab, Cor.Preta, this));
+            ColocarNovaPeca('D', 7, new Peao(tab, Cor.Preta, this));
+            ColocarNovaPeca('E', 7, new Peao(tab, Cor.Preta, this));
+            ColocarNovaPeca('F', 7, new Peao(tab, Cor.Preta, this));
+            ColocarNovaPeca('G', 7, new Peao(tab, Cor.Preta, this));
+            ColocarNovaPeca('H', 7, new Peao(tab, Cor.Preta, this));
         }
     }
 }
